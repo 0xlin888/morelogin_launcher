@@ -75,7 +75,7 @@
 - **无需安装 Python 环境**，**小白也能放心使用**。
 
 ### **MD5 加密**
-- **MD5 算法** 采用了 **JavaScript-MD5 DEMO** 的开源实现。
+- **MD5 算法** 采用了 **JavaScript-MD5 DEMO** 中的js链接。
 - 🔗 **MD5.js 线上链接**：[JavaScript-MD5](https://blueimp.github.io/JavaScript-MD5/js/md5.js)
 - 📌 **Github 开源地址**：[blueimp/JavaScript-MD5](https://github.com/blueimp/JavaScript-MD5)
 
