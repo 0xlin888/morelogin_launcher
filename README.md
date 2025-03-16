@@ -27,7 +27,7 @@
 2. **复制 Chrome 快捷方式** 并重命名为 **MoreLogin 启动器**。
 3. 右键 -> **属性** -> **目标**，将文本框内容替换为：
    ```sh
-   "C:\Program Files\Google\Chrome\Application\chrome.exe" --disable-web-security
+   "C:\Program Files\Google\Chrome\Application\chrome.exe" --disable-web-security --user-data-dir="C:\MoreLoginLauncher"
    ```
 4. **双击快捷方式启动 Chrome**，然后打开 `chrome://settings/onStartup`。
 5. 找到 **“打开特定网页或一组网页”** 选项，并将 **在线版或离线版的地址** 设置为起始页面。
