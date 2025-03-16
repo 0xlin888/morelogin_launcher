@@ -1,0 +1,585 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoreLogin启动器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background: #fff;
+            color: #1a1a1a;
+            line-height: 1.6;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center; 
+            gap: 10px; 
+            padding:10px;
+        }
+
+        .header img {
+            height: 100px; 
+            width: auto;
+        }
+
+        .header h1 {
+            font-size: 24px; 
+            margin: 0;
+        }
+        .intro{
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin: 1rem 0 0.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 0.95rem;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 0.5rem 2rem 0.5rem 0.5rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            background: #f8f9fa;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #007bff;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            user-select: none;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .toggle-password:hover {
+            color: #007bff;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .button-container button {
+            flex: 1;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: transform 0.2s ease;
+        }
+
+        #generate-cmd {
+            background: linear-gradient(135deg, #007bff, #0062cc);
+            color: white;
+        }
+
+        #copy-groups-btn {
+            background: linear-gradient(135deg, #17a2b8, #138496);
+            color: white;
+        }
+
+        #generate-cmd:hover,
+        #copy-groups-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .cmd-container {
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+        }
+
+        .cmd-group {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.5rem;
+            margin: 0.5rem 0;
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .group-info {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            min-width: 0;
+        }
+
+        .group-info input {
+            width: 30px !important;
+        }
+
+        .group-number {
+            flex-shrink: 0;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .group-ids {
+            flex: 1;
+            color: #666;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .action-btns {
+            flex-shrink: 0;
+            display: flex;
+            gap: 0.4rem;
+        }
+
+        .exec-btn {
+            padding: 0.4rem 0.8rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            font-weight: 500;
+            min-width: 80px;
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        .copybtn {
+            background: linear-gradient(135deg, #17a2b8, #138496);
+        }
+
+        .startbtn {
+            background: linear-gradient(135deg, #28a745, #218838);
+        }
+
+        .closetbtn {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+        }
+
+        .exec-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .batch-section {
+            display: grid;
+            gap: 0.8rem;
+        }
+
+        .batch-actions {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        #batch-start {
+            background: linear-gradient(135deg, #28a745, #218838);
+        }
+
+        #batch-close {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+        }
+
+        .batch-notice {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .cmd-group {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                padding: 0.8rem;
+            }
+
+            .group-info {
+                width: 100%;
+            }
+
+            .action-btns {
+                width: 100%;
+                justify-content: flex-end;
+            }
+
+            .batch-actions {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .exec-btn {
+                min-width: auto;
+                padding: 0.4rem 0.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="https://www.ludekuai.cc/tools/morelogin_launcher/logo.png">
+        <h1>MoreLogin启动器</h1>
+    </div>
+    <p class="intro">网站：<a href="https://ludekuai.cc" target="_blank">ludekuai.cc</a> | 作者推特：<a href="https://x.com/0xlin888" target="_blank">@0xlin</a> | Github：<a href="https://github.com/0xlin888/morelogin_launcher" target="_blank">源码</a> | TG：<a href="https://t.me/oxlin888" target="_blank">0xlin</a></p>
+    <p class="intro">1.提示：由于MoreLogin接口跨域限制，无法直接使用，需要配合Chrome设置，具体方法参考<a href="https://x.com/0xlin888" target="_blank"> 推特 </a>或<a href="https://github.com/0xlin888/morelogin_launcher" target="_blank"> Github </a></p>
+    <p class="intro">2.所有请求和数据在本地，不会收集和上传任何数据到网站</p>
+    <div class="container">
+        <label for="api-url">API接口地址</label>
+        <input type="text" id="api-url" placeholder="输入接口地址" value="http://127.0.0.1:40000">
+
+        <label>API ID</label>
+        <div class="input-wrapper">
+            <input type="password" id="api-id" placeholder="输入 API ID">
+            <span class="toggle-password">👁</span>
+        </div>
+
+        <label>API Key</label>
+        <div class="input-wrapper">
+            <input type="password" id="api-key" placeholder="输入 API Key">
+            <span class="toggle-password">👁</span>
+        </div>
+
+        <label>端对端密钥（可选）</label>
+        <div class="input-wrapper">
+            <input type="password" id="encrypt-key" placeholder="输入 Encrypt Key">
+            <span class="toggle-password">👁</span>
+        </div>
+
+        <label for="id-list">MoreLogin环境序号</label>
+        <textarea id="id-list" placeholder="输入环境序号（支持范围格式如1-5, 或每行一个，不连续序号用逗号分隔）" rows="3"></textarea>
+
+        <label for="group-size">每组数量</label>
+        <input type="number" id="group-size" min="1" placeholder="输入每组数量">
+
+        <div class="batch-section">
+            <label for="batch-range">批量操作范围</label>
+            <input type="text" id="batch-range" placeholder="示例：1-5,7,9-11">
+            <div class="batch-actions">
+                <button id="batch-start" class="exec-btn">批量启动</button>
+                <button id="batch-close" class="exec-btn">批量关闭</button>
+            </div>
+            <div class="batch-notice">支持格式：单个数字（3），连续范围（1-5），不连续序号用逗号分隔</div>
+        </div>
+
+        <div class="button-container">
+            <button id="generate-cmd">随机分组</button>
+            <button id="copy-groups-btn">复制分组结果</button>
+        </div>
+
+        <div class="cmd-container" id="cmd-output"></div>
+    </div>
+    <!--  md5加密算法引用开源的https://github.com/blueimp/JavaScript-MD5 -->
+    <script src="https://blueimp.github.io/JavaScript-MD5/js/md5.js"></script>
+    <script>
+        // 密码显示切换功能
+        document.querySelectorAll('.toggle-password').forEach(button => {
+            button.addEventListener('click', function() {
+                const input = this.previousElementSibling;
+                const isPassword = input.type === 'password';
+                input.type = isPassword ? 'text' : 'password';
+                this.textContent = isPassword ? '🙈' : '👁';
+            });
+        });
+
+        // 数据持久化
+        document.addEventListener('DOMContentLoaded', function() {
+            const ids = ['api-url', 'api-id', 'api-key', 'encrypt-key', 'id-list', 'group-size', 'batch-range'];
+            ids.forEach(id => {
+                const saved = localStorage.getItem(id);
+                if (saved) document.getElementById(id).value = saved;
+            });
+            
+            ids.forEach(id => {
+                document.getElementById(id).addEventListener('input', function() {
+                    localStorage.setItem(id, this.value);
+                });
+            });
+        });
+
+        // 输入解析逻辑
+        const parseInput = {
+            idList(input) {
+                return this._parseRange(input, /[\n,]+/);
+            },
+            
+            batchRange(input) {
+                return this._parseRange(input, /,/);
+            },
+
+            _parseRange(input, separator) {
+                const result = new Set();
+                input.split(separator).forEach(part => {
+                    const trimmed = part.trim();
+                    if (!trimmed) return;
+
+                    if (trimmed.includes('-')) {
+                        const [a, b] = trimmed.split('-').map(Number);
+                        if (!isNaN(a) && !isNaN(b)) {
+                            const start = Math.min(a, b);
+                            const end = Math.max(a, b);
+                            for (let i = start; i <= end; i++) result.add(i.toString());
+                        }
+                    } else {
+                        const num = parseInt(trimmed);
+                        if (!isNaN(num)) result.add(num.toString());
+                    }
+                });
+                return Array.from(result).sort((a, b) => a - b);
+            }
+        };
+
+        // API客户端（间隔发送不等待完成）
+        const apiClient = {
+            async handleAction(ids, action) {
+                const apiUrl = document.getElementById('api-url').value;
+                const apiId = document.getElementById('api-id').value;
+                const apiKey = document.getElementById('api-key').value;
+                const encryptKey = document.getElementById('encrypt-key').value;
+                const auth = md5(apiId + "abcd" + apiKey).toString();
+                
+                const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+                const promises = [];
+                let requestCount = 0;
+
+                const sendRequests = async () => {
+                    for (const id of ids) {
+                        const promise = fetch(`${apiUrl}/api/env/${action}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-Api-Id': apiId,
+                                'X-Nonce-Id': 'abcd',
+                                'Authorization': auth
+                            },
+                            body: JSON.stringify({
+                                uniqueId: id,
+                                envId: "",
+                                ...(encryptKey && { encryptKey })
+                            })
+                        })
+                        .then(async response => {
+                            const data = await response.json();
+                            return { status: 'success', id, data };
+                        })
+                        .catch(error => ({ status: 'error', id, error }));
+                        
+                        promises.push(promise);
+                        requestCount++;
+                        
+                        if (requestCount < ids.length) {
+                            await delay(500);
+                        }
+                    }
+                };
+
+                await sendRequests();
+                return Promise.allSettled(promises);
+            }
+        };
+
+        // 分组管理器
+        const groupManager = {
+            shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            },
+
+            generateGroups() {
+                const apiUrl = document.getElementById('api-url').value.trim();
+                const apiId = document.getElementById('api-id').value.trim();
+                const apiKey = document.getElementById('api-key').value.trim();
+                const groupSize = parseInt(document.getElementById('group-size').value);
+                const idList = parseInput.idList(document.getElementById('id-list').value);
+
+                if (!apiUrl || !apiId || !apiKey) return alert('请填写API信息');
+                if (isNaN(groupSize) || groupSize < 1) return alert('无效的分组数量');
+                if (idList.length === 0) return alert('请输入有效的环境序号');
+
+                const groups = [];
+                const shuffled = this.shuffleArray([...idList]);
+                for (let i = 0; i < shuffled.length; i += groupSize) {
+                    groups.push(shuffled.slice(i, i + groupSize));
+                }
+
+                this.renderGroups(groups);
+            },
+
+            renderGroups(groups) {
+                const container = document.getElementById('cmd-output');
+                container.innerHTML = '';
+                
+                groups.forEach((group, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'cmd-group';
+                    div.innerHTML = `
+                        <div class="group-info">
+                            <input type="checkbox">
+                            <span class="group-number">第${index + 1}组</span>
+                            <span class="group-ids" title="${group.join(', ')}">${group.join(', ')}</span>
+                        </div>
+                        <div class="action-btns">
+                            <button class="exec-btn copybtn">复制</button>
+                            <button class="exec-btn startbtn">启动</button>
+                            <button class="exec-btn closetbtn">关闭</button>
+                        </div>
+                    `;
+                    
+                    this.bindGroupEvents(div, group);
+                    container.appendChild(div);
+                });
+            },
+
+            bindGroupEvents(groupElement, group) {
+                const [copyBtn, startBtn, closeBtn] = groupElement.querySelectorAll('button');
+                
+                copyBtn.onclick = () => {
+                    const ids = group.join(', ');
+                    navigator.clipboard.writeText(ids).then(() => {
+                        uiHelper.showAlert('已复制', '#17a2b8', copyBtn);
+                    }).catch(err => {
+                        console.error('复制失败:', err);
+                        uiHelper.showAlert('复制失败', '#dc3545', copyBtn);
+                    });
+                };
+
+                startBtn.onclick = async () => {
+                    startBtn.disabled = true;
+                    try {
+                        const results = await apiClient.handleAction(group, 'start');
+                        const success = results.filter(r => r.status === 'fulfilled' && !r.value.error).length;
+                        uiHelper.showAlert(
+                            `已发送${group.length}个请求（成功${success}个）`,
+                            success === group.length ? '#28a745' : '#ffc107',
+                            startBtn
+                        );
+                    } finally {
+                        startBtn.disabled = false;
+                    }
+                };
+
+                closeBtn.onclick = async () => {
+                    closeBtn.disabled = true;
+                    try {
+                        const results = await apiClient.handleAction(group, 'close');
+                        const success = results.filter(r => r.status === 'fulfilled' && !r.value.error).length;
+                        uiHelper.showAlert(
+                            `已发送${group.length}个请求（成功${success}个）`,
+                            success === group.length ? '#28a745' : '#ffc107',
+                            closeBtn
+                        );
+                    } finally {
+                        closeBtn.disabled = false;
+                    }
+                };
+            }
+        };
+
+        // 批量操作模块
+        const batchOperator = {
+            async handleBatch(action, btn) {
+                const input = document.getElementById('batch-range').value.trim();
+                const ids = parseInput.batchRange(input);
+                
+                if (ids.length === 0) {
+                    uiHelper.showAlert('请输入有效的范围', '#dc3545', btn);
+                    return;
+                }
+
+                btn.disabled = true;
+                try {
+                    const results = await apiClient.handleAction(ids, action);
+                    const success = results.filter(r => r.status === 'fulfilled' && !r.value.error).length;
+                    uiHelper.showAlert(
+                        `已发送${ids.length}个请求（成功${success}个）`,
+                        success === ids.length ? '#28a745' : '#ffc107',
+                        btn
+                    );
+                } finally {
+                    btn.disabled = false;
+                }
+            }
+        };
+
+        // 界面辅助功能
+        const uiHelper = {
+            showAlert(text, color, target) {
+                const alert = document.createElement('div');
+                alert.style = `background:${color};color:white;padding:4px 8px;border-radius:4px;position:absolute;margin-top:-25px;`;
+                alert.textContent = text;
+                target.parentNode.appendChild(alert);
+                setTimeout(() => alert.remove(), 1000);
+            }
+        };
+
+        // 事件绑定
+        document.getElementById('generate-cmd').addEventListener('click', () => groupManager.generateGroups());
+        document.getElementById('batch-start').addEventListener('click', () => batchOperator.handleBatch('start', document.getElementById('batch-start')));
+        document.getElementById('batch-close').addEventListener('click', () => batchOperator.handleBatch('close', document.getElementById('batch-close')));
+        
+        document.getElementById('copy-groups-btn').addEventListener('click', function() {
+            const groups = Array.from(document.querySelectorAll('.group-ids'))
+                .map(el => el.textContent.trim());
+            
+            if (groups.length === 0) {
+                uiHelper.showAlert('没有可复制的分组', '#dc3545', this);
+                return;
+            }
+            
+            navigator.clipboard.writeText(groups.join('\n'))
+                .then(() => uiHelper.showAlert('已复制分组', '#17a2b8', this))
+                .catch(() => uiHelper.showAlert('复制失败', '#dc3545', this));
+        });
+    </script>
+</body>
+</html>
