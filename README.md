@@ -1,7 +1,7 @@
 # MoreLogin Launcher
 
 ## 📢 我的推特
-🔗 [@0xlin888](https://twitter.com/0xlin888) 求个关注！如果有任何使用问题，可以通过推特联系我。
+🔗 [@0x零](https://twitter.com/0xlin168) 求个关注！如果有任何使用问题，可以通过推特联系我。
 
 ---
 
